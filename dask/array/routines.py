@@ -988,8 +988,11 @@ def _unique_internal(ar, indices, counts, return_inverse=False):
 
     return_index = indices is not None
     return_counts = counts is not None
-
-    u = np.unique(ar)
+    
+    try:
+        u = np.unique(ar).astype(np.float64)
+    except:
+        nothing = 0
 
     dt = [("values", u.dtype)]
     if return_index:
@@ -1620,7 +1623,10 @@ def delete(arr, obj, axis):
     else:
         obj = np.asarray(obj)
         obj = np.where(obj < 0, obj + arr.shape[axis], obj)
-        obj = np.unique(obj)
+        try:
+            obj = np.unique(obj).astype(np.float64)
+        except:
+            nothing = 0
 
     target_arr = split_at_breaks(arr, obj, axis)
 
